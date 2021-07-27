@@ -13,14 +13,15 @@ public class CustomerService {
     public Map.Entry<Customer, String> getSmallest() {
         //return map.entrySet().stream().min(Comparator.comparingLong(o -> o.getKey().getScores())).get();
         // находим наименьший элемент
-        Map.Entry<Customer, String>minCustomer = map.entrySet().stream().min(Comparator.comparingLong(o -> o.getKey().getScores())).get();
+        //Map.Entry<Customer, String>minCustomer = map.entrySet().stream().min(Comparator.comparingLong(o -> o.getKey().getScores())).get();
+        Map.Entry<Customer, String>minCustomer = map.firstEntry();
         // проерка для предотвращения nullPointer
         if (minCustomer == null) {
             return null;
         } else{
             // новый экземпляр объекта Customer для того, чтобы в случае изменения меняли именно его, а не объект в map'е
             Customer tmpCustomer = new Customer(minCustomer.getKey().getId(), minCustomer.getKey().getName(), minCustomer.getKey().getScores());
-            return new AbstractMap.SimpleEntry<>(tmpCustomer, minCustomer.getValue());
+            return new AbstractMap.SimpleEntry<Customer, String>(tmpCustomer, minCustomer.getValue());
         }
     }
 
@@ -33,7 +34,7 @@ public class CustomerService {
         } else{
             // новый экземпляр объекта Customer для того, чтобы в случае изменения меняли именно его, а не объект в map'е
             Customer tmpCustomer = new Customer(higher_entry.getKey().getId(), higher_entry.getKey().getName(), higher_entry.getKey().getScores());
-            return new AbstractMap.SimpleEntry<>(tmpCustomer, higher_entry.getValue());
+            return new AbstractMap.SimpleEntry<Customer, String>(tmpCustomer, higher_entry.getValue());
         }
     }
 

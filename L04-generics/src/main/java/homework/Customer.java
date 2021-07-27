@@ -68,42 +68,4 @@ public class Customer {
         result = 31 * result + (int) (scores ^ (scores >>> 32));*/
         return result;
     }
-
-    public static void main( String[] args ) {
-        final long customerId = 1L;
-        Customer customer = new Customer(customerId, "Ivan", 233);
-        Map<Customer, String> map = new HashMap<>();
-
-        String expectedData = "data";
-        map.put(customer, expectedData);
-
-        System.out.println(new Customer(customerId, "Ivan", 233));
-        System.out.println(new Customer(customerId, "Ivan23132", 233));
-        System.out.println(map.get(new Customer(customerId, "Ivan", 233)));
-        System.out.println(map.get(new Customer(customerId, "Ivan123", 233)));
-        //
-        Customer customer2 = new Customer(2, "Jax", 300);
-        System.out.println(customer.hashCode());
-        System.out.println(new Customer(customerId, "Ivan23132", 233).hashCode());
-        /*Customer Customer = new Customer(1, "Alex", 500);
-        Customer Customer2 = new Customer(2, "Jax", 300);
-        System.out.println(Customer);
-        System.out.println(Customer2);
-        Customer.setName("Josh");
-        System.out.println(Customer);
-        System.out.println(Customer2);*/
-        /*System.out.println(Customer);
-        System.out.println(Customer.getId());
-        System.out.println(Customer.getName());
-        Customer.setName("Josh");
-        System.out.println(Customer.getName());
-        System.out.println(Customer.getScores());
-        Customer.setScores(666);
-        System.out.println(Customer.getScores());
-        System.out.println(Customer.toString());
-        System.out.println(Customer.equals(Customer));
-        System.out.println(Customer.equals(Customer2));
-        System.out.println(Customer.hashCode());
-        System.out.println(Customer2.hashCode());*/
-    }
 }
