@@ -41,41 +41,50 @@ public class TestAnalyzer {
 
     public void modifyMethod(Method methodTest, Method[] methodsBefore, Method[] methodsAfter, Class clazz) {
         total++;
+        boolean isSuccess = false;
         // создаём экземпляр найденного объекта(для каждой тройки)
         try {
             Object exClass = clazz.newInstance();
-            // Методы Before
-            Arrays.stream(methodsBefore).forEach(method -> {
+            // вызываем методы Before
+            isSuccess = callMethods(exClass, methodsBefore);
+            // вызываем метод Test только если все методы Before отработали корректно
+            if (isSuccess) {
+                // Сам переданный метод Test
                 try {
-                    //method.invoke(exClass,10,11);
-                    this.callMethod(exClass, method);
+                    this.callMethod(exClass, methodTest);
                 } catch (Exception e) {
                     // ошибка
-                    fail++;
-                    return;
+                    isSuccess = false;
                 }
-            });
-            // Сам переданный метод Test
-            this.callMethod(exClass, methodTest);
-            // Методы After
-            Arrays.stream(methodsAfter).forEach(method -> {
-                try {
-                    this.callMethod(exClass, method);
-                } catch (Exception e) {
-                    // ошибка
-                    fail++;
-                    return;
-                }
-            });
-            pass++;
+            }
+            // Методы After(вызываются всегда и не влияют на итоговый результат)
+            callMethods(exClass, methodsAfter);
+            if (isSuccess) {
+                pass++;
+            } else {
+                fail++;
+            }
         } catch (Exception e) {
-            // ошибка
+            // ошибка(будет только если не смогли создать экземпляр класса)
             fail++;
-            System.out.println("error="+e);
         }
     }
+    // метод для вызова массива методов(возвращает успешность запуска)
+    public static boolean callMethods(Object exClass, Method[] methods) {
+        boolean res = true;
+        try
+        {
+            Arrays.stream(methods).forEach(method -> {
+                    callMethod(exClass, method);
+            });
+        // хоть одна ошибка - выходим
+        } catch (Exception e) {
+            res = false;
+        }
+        return res;
+    }
     // метод для вызова переданного метода
-    public static Object callMethod(Object object, Method method) {
+    public static void callMethod(Object object, Method method) {
         try {
             method.setAccessible(true);
             List<Object> paramList = new ArrayList<>();
@@ -90,7 +99,7 @@ public class TestAnalyzer {
                     paramList.add("TestStr");
                 }
             }
-            return method.invoke(object,paramList.toArray());
+            method.invoke(object,paramList.toArray());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
