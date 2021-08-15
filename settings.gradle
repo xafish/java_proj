@@ -1,4 +1,5 @@
-rootProject.name = 'hw01-gradle'
+rootProject.name = 'homework'
 include 'hw01-gradle'
 include 'L04-generics'
+include 'hw06'
 
