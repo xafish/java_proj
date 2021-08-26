@@ -4,6 +4,7 @@ import interfaceList.interfaceTest;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 
 class Ioc {
 
@@ -20,16 +21,22 @@ class Ioc {
     static class DemoInvocationHandler implements InvocationHandler {
         // класс из интерфейса
         private final interfaceTest myClass;
+        // методы, помеченные аннотацией Log
+        private final Method[] logMethodList;
 
         // конструктор класса
         DemoInvocationHandler(interfaceTest myClass) {
             this.myClass = myClass;
+            // у интерфейса(это важно) получаем массив методов у которых есть аннотация Log
+            this.logMethodList = Arrays.stream(interfaceTest.class.getMethods())
+                    .filter(method -> method.isAnnotationPresent(Log.class))
+                    .toArray(Method[]::new);
         }
         // переопределим выполнение мотода
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             // если метод помечен аннотацией log
-            if (method.isAnnotationPresent(Log.class)) {
+            if ( Arrays.stream(logMethodList).anyMatch(method::equals)) {
                 String paramlist = "";
                 // пробежимся по массиву аргументов и добавим их в текст
                 for (Object arg : args) {
