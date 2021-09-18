@@ -25,16 +25,22 @@ class ProcessorTest {
         field13Data.add(data);
         field13.setData(field13Data);
 
-        List<Processor> processors = List.of(new ProcessorEvenSecError());
+        var processorEvenSecError = new ProcessorEvenSecError();
 
-        final String[] curSec = new String[1];
+        List<Processor> processors = List.of(processorEvenSecError);
+
+        // список ошибок четных секунд
+        final ArrayList<String> evenErrList = new ArrayList<>();
         var complexProcessor = new ComplexProcessor(processors,
                 // обреботаем ошибку
                 ex -> {System.out.println(ex);
                     // получаем сообщение об ошибке
                     var mes = ex.getMessage();
-                    // получаем секунду и сохраняем её в массив
-                    curSec[0] = mes.substring(mes.indexOf(":")+1, mes.length());
+                    // если ошибка чётной секунды
+                    if (mes.equals(ProcessorEvenSecError.EVEN_SEC_EXCEPTION)) {
+                        // сохраняем ошибку в список
+                        evenErrList.add(mes);
+                    }
                 });
         var listenerPrinter = new ListenerPrinterConsole();
         complexProcessor.addListener(listenerPrinter);
@@ -51,14 +57,13 @@ class ProcessorTest {
                 .build();
 
         var result = complexProcessor.handle(message);
+        // получаем секунду запуска из лога по классу нужного нам процессора
+        var launchSec = complexProcessor.getLog(processorEvenSecError.getClass()).getDate().getSecond();
+        System.out.println("launchSec:" + launchSec);
         System.out.println("result:" + result);
-        System.out.println("curSec[0]:" + curSec[0]);
+        // Была ли ошибка в чётную секунду(и не было ли её в нечётную)
+        boolean res = (evenErrList.isEmpty() && !(launchSec%2==0)) || (!evenErrList.isEmpty() && launchSec%2==0);
+        assertThat(res).isTrue();
         complexProcessor.removeListener(listenerPrinter);
-        // проверим полученную секунду на чётность
-        if (curSec[0] != null) {
-            int sec = Integer.parseInt(curSec[0].trim());
-            boolean res = (sec%2==0);
-            assertThat(res).isTrue();
-        }
     }
 }

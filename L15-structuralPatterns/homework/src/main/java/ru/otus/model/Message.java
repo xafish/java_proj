@@ -36,7 +36,7 @@ public class Message {
     }
 
     // конструктор копия - для иммутабельности
-    public Message(Message other) {
+    /*public Message(Message other) {
         this(other.getId(),
                 other.getField1(),
                 other.getField2(),
@@ -52,8 +52,25 @@ public class Message {
                 other.getField12(),
                 other.getField13() == null? null: new ObjectForMessage( other.getField13())
         );
+    }*/
+    // метод для создания копии
+    public Message clone() {
+        return new Message(id,
+                field1,
+                field2,
+                field3,
+                field3,
+                field3,
+                field3,
+                field3,
+                field3,
+                field3,
+                field3,
+                field3,
+                field3,
+                field13 == null? null: new ObjectForMessage(field13)
+        );
     }
-
     public long getId() {
         return id;
     }
