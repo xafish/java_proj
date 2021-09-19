@@ -3,15 +3,19 @@ package ru.otus.processor.homework;
 
 import org.junit.jupiter.api.Test;
 import ru.otus.handler.ComplexProcessor;
-import ru.otus.listener.ListenerPrinterConsole;
 import ru.otus.model.Message;
 import ru.otus.model.ObjectForMessage;
 import ru.otus.processor.Processor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProcessorTest {
 
@@ -25,25 +29,16 @@ class ProcessorTest {
         field13Data.add(data);
         field13.setData(field13Data);
 
-        var processorEvenSecError = new ProcessorEvenSecError();
+        // выставляем ЧЁТНУЮ секунду
+        var processorEvenSecError = new ProcessorEvenSecError(() -> LocalDateTime.of(LocalDate.now(), LocalTime.of(10,10,10)));
 
         List<Processor> processors = List.of(processorEvenSecError);
 
-        // список ошибок четных секунд
-        final ArrayList<String> evenErrList = new ArrayList<>();
         var complexProcessor = new ComplexProcessor(processors,
-                // обреботаем ошибку
-                ex -> {System.out.println(ex);
-                    // получаем сообщение об ошибке
-                    var mes = ex.getMessage();
-                    // если ошибка чётной секунды
-                    if (mes.equals(ProcessorEvenSecError.EVEN_SEC_EXCEPTION)) {
-                        // сохраняем ошибку в список
-                        evenErrList.add(mes);
-                    }
+                // вызовем ошибку, если она случилась
+                ex -> {
+                    throw new RuntimeException(ex.getMessage());
                 });
-        var listenerPrinter = new ListenerPrinterConsole();
-        complexProcessor.addListener(listenerPrinter);
 
         var message = new Message.Builder(id)
                 .field1("field1")
@@ -56,14 +51,26 @@ class ProcessorTest {
                 .field13(field13)
                 .build();
 
-        var result = complexProcessor.handle(message);
-        // получаем секунду запуска из лога по классу нужного нам процессора
-        var launchSec = complexProcessor.getLog(processorEvenSecError.getClass()).getDate().getSecond();
-        System.out.println("launchSec:" + launchSec);
-        System.out.println("result:" + result);
-        // Была ли ошибка в чётную секунду(и не было ли её в нечётную)
-        boolean res = (evenErrList.isEmpty() && !(launchSec%2==0)) || (!evenErrList.isEmpty() && launchSec%2==0);
-        assertThat(res).isTrue();
-        complexProcessor.removeListener(listenerPrinter);
+        // проверяем что была ошибка
+        Throwable thrown = assertThrows(RuntimeException.class, () -> {
+            complexProcessor.handle(message);
+        });
+        assertThat(thrown.getMessage()).isEqualTo(ProcessorEvenSecError.EVEN_SEC_EXCEPTION);
+
+        // выставлыяем НЕ чётную секунду
+        var processorNotEvenSecError = new ProcessorEvenSecError(() -> LocalDateTime.of(LocalDate.now(), LocalTime.of(10,10,11)));
+        // теперь в списке другой экземпляр процессора - с НЕ чётной секундой
+        processors = List.of(processorNotEvenSecError);
+
+        var complexProcessorNoErr = new ComplexProcessor(processors,
+                // вызовем ошибку, если она случилась
+                ex -> {
+                    throw new RuntimeException(ex.getMessage());
+                });
+        // проверяем что ошибки НЕ было
+        assertDoesNotThrow(() -> {
+            complexProcessorNoErr.handle(message);
+        });
+
     }
 }

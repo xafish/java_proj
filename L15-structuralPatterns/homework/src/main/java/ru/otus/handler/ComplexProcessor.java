@@ -3,6 +3,7 @@ package ru.otus.handler;
 import ru.otus.listener.Listener;
 import ru.otus.model.Message;
 import ru.otus.processor.Processor;
+import ru.otus.processor.homework.DateTimeProvider;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class ComplexProcessor implements Handler {
     private final Consumer<Exception> errorHandler;
     // лог запуска процессоров
     //private final List<DateTimeProvider> dateTimeProvider = new ArrayList<>();
-    private final HashMap<Object,DateTimeProvider> logLaunch = new HashMap<>();
+    private final HashMap<Object, DateTimeProvider> logLaunch = new HashMap<>();
     //private final DateTimeProvider dateTimeProvider  = new ArrayList<>();
 
     public ComplexProcessor(List<Processor> processors, Consumer<Exception> errorHandler) {

@@ -8,6 +8,7 @@ import ru.otus.processor.Processor;
 import ru.otus.processor.homework.ProcessorChangeField11Field12;
 import ru.otus.processor.homework.ProcessorEvenSecError;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class HomeWork {
            по аналогии с Demo.class
            из элеменов "to do" создать new ComplexProcessor и обработать сообщение
          */
-        List<Processor> processors = List.of(new ProcessorChangeField11Field12(), new ProcessorEvenSecError());
+        List<Processor> processors = List.of(new ProcessorChangeField11Field12(), new ProcessorEvenSecError(() -> LocalDateTime.now()));
 
         // список ошибок четных секунд
         final ArrayList<String> evenErrList = new ArrayList<>();
@@ -65,6 +66,7 @@ public class HomeWork {
 
         var messageFromHistory = historyListener.findMessageById(1L);
         System.out.println(messageFromHistory);
+
         complexProcessor.removeListener(listenerPrinter);
 
     }
