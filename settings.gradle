@@ -4,3 +4,5 @@ include 'L04-generics'
 include 'hw06'
 include 'hw12-solid'
 
+include 'L15-structuralPatterns:demo'
+include 'L15-structuralPatterns:homework'
