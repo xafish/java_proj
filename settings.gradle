@@ -4,3 +4,6 @@ include 'L04-generics'
 include 'hw06'
 include 'hw12-solid'
 
+include 'L16-io:demo'
+include 'L16-io:homework'
+
