@@ -22,6 +22,7 @@ class ProcessorTest {
     @DisplayName("Из файла читается json, обрабатывается, результат сериализуется в строку")
     void processingTest(@TempDir Path tempDir) throws IOException {
         System.out.println(tempDir);
+        System.out.println("current dir: " + System.getProperty("user.dir"));
 
         //given
         var inputDataFileName = "inputData.json";

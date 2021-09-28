@@ -1,19 +1,15 @@
 package ru.otus.dataprocessor;
 
-import ru.otus.model.Measurement;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonStructure;
-import javax.json.JsonWriter;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class FileSerializer implements Serializer {
     private final String fileName;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public FileSerializer(String fileName) {
         this.fileName = fileName;
@@ -23,12 +19,13 @@ public class FileSerializer implements Serializer {
     public void serialize(Map<String, Double> data) {
         // формирует результирующий json и сохраняет его в файл
         // сформируем билдер, который будем использовать
-        var jsonObject = Json.createObjectBuilder();
+        /*var jsonObject = Json.createObjectBuilder();
         data.forEach((str, val) -> {
             //System.out.println("str="+str);
             //System.out.println("val="+val);
             // добавим строку, удалив лишние кавычки в названии
             jsonObject.add(str.replace("\"", ""), val);
+            //jsonObject.add(str, val);
         });
         try (
             // создаём writer
@@ -36,10 +33,21 @@ public class FileSerializer implements Serializer {
         ){
             // пишем json объект в фаил
             jsonReader.writeObject(jsonObject.build());
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             // вызываем пользовательскую ошибку
             throw new FileProcessException(e);
+        }*/
+        // пишем мапу в фаил
+        try {
+            var file = new File(fileName);
+            Files.writeString(file.toPath(), mapper.writeValueAsString(data));
+        } catch (IOException e) {
+            e.printStackTrace();
+            // вызываем пользовательскую ошибку
+            throw new FileProcessException(e);
         }
+
     }
 }

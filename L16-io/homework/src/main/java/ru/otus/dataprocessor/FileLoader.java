@@ -4,6 +4,7 @@ import ru.otus.model.Measurement;
 
 import javax.json.JsonArray;
 import javax.json.Json;
+import javax.json.JsonString;
 import javax.json.JsonStructure;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -16,7 +17,7 @@ public class FileLoader implements Loader {
 
     public FileLoader(String fileName) {
         // указываем путь к ресурсам
-        this.fileName = "src\\test\\resources\\"+fileName;
+        this.fileName = fileName;
     }
 
     @Override
@@ -24,7 +25,8 @@ public class FileLoader implements Loader {
         //читает файл, парсит и возвращает результат
         try (
              // создаём ридер из потока байт по переданному текстовому файлу
-             var jsonReader = Json.createReader( new BufferedInputStream(new FileInputStream(fileName)))
+             //var jsonReader = Json.createReader( new BufferedInputStream(new FileInputStream(fileName)))
+             var jsonReader = Json.createReader(FileLoader.class.getClassLoader().getResourceAsStream(fileName))
         ){
             // массив результатов
             final List<Measurement> res = new ArrayList<>();
@@ -34,10 +36,13 @@ public class FileLoader implements Loader {
             jsonFromTheFile.asJsonArray().stream().forEach(str -> {
                 // извлекаем данные каждой строки массива
                 JsonStructure strJsonFromTheFile = str.asJsonObject();
-                String name = strJsonFromTheFile.getValue("/name").toString();
+                // получим имя как json строку
+                JsonString js = (JsonString) strJsonFromTheFile.getValue("/name");
+                String name = js.getString();
+                // получим значение
                 double value = Double.parseDouble(strJsonFromTheFile.getValue("/value").toString());
-                //System.out.println("name:" + name);
-                //System.out.println("value:" + value);
+                System.out.println("name:" + name);
+                System.out.println("value:" + value);
                 // добавляем данные в результат
                 res.add(new Measurement(
                         name,
@@ -46,10 +51,6 @@ public class FileLoader implements Loader {
                 );
             });
             return res;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            // вызываем пользовательскую ошибку
-            throw new FileProcessException(e);
         }
     }
 }
