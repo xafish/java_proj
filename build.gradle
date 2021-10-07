@@ -40,9 +40,6 @@ allprojects {
             dependency("org.testcontainers:junit-jupiter:${Versions.testcontainers}")
             dependency("org.testcontainers:postgresql:${Versions.testcontainers}")
             dependency("javax.json:javax.json-api:1.1.3")
-            dependency("org.flywaydb:flyway-core:7.14.1")
-            dependency("ch.qos.logback:logback-classic:1.2.6")
-            dependency("org.postgresql:postgresql:42.2.24")
         }
     }
 
