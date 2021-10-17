@@ -2,6 +2,8 @@ rootProject.name = 'homework'
 include 'hw01-gradle'
 include 'L04-generics'
 include 'hw06'
+include 'hw10-byteCodes'
+
 include 'hw12-solid'
 
 include 'L15-structuralPatterns:demo'
@@ -12,3 +14,6 @@ include 'L16-io:homework'
 
 include 'L18-jdbc:demo'
 include 'L18-jdbc:homework'
+
+include 'L21-jpql:class-demo'
+include 'L21-jpql:homework-template'
