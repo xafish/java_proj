@@ -41,7 +41,7 @@ public class DbServiceDemo {
         // добавление улицы
         var adress = new Adress("St. Patric street");
         // создание экземпляра Client
-        var clientEkz = new Client("dbServiceFirst"/*, adress*/);
+        var clientEkz = new Client("dbServiceFirst", adress);
         // добавление нескольких телефонов
         clientEkz.addPhone(new Phone("89994444444"));
         clientEkz.addPhone(new Phone("89995555555"));
