@@ -17,7 +17,7 @@ public class Phone implements Cloneable {
     private String number;
 
     // делаем двунаправленную связь с указанием сущности-владельца
-    @ManyToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private Client client;
 
@@ -62,6 +62,9 @@ public class Phone implements Cloneable {
         this.number = number;
     }
 
+    public Client getClient() {
+        return client;
+    }
     // метод для установления связи с клиентом
     public void setClient(Client client) {
         this.client = client;

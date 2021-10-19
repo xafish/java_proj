@@ -48,7 +48,6 @@ public class DbServiceDemo {
         clientEkz.addPhone(new Phone("89997777777"));
         // сохранение клиента в базе со всеми связанными сущностями
         dbServiceClient.saveClient(clientEkz);
-
         var adress2 = new Adress("Elm street");
         var clientEkz2 = new Client("dbServiceSecond", adress2);
         clientEkz2.addPhone(new Phone("89996666666"));

@@ -57,6 +57,12 @@ public class Client implements Cloneable {
         this.phones = null;
     }
 
+    public Client(Long id, String name, Adress adress) {
+        this.id = id;
+        this.name = name;
+        this.adress = adress;
+    }
+
     public Client(Long id, String name, Adress adress, Set<Phone> phones) {
         this.id = id;
         this.name = name;
@@ -66,7 +72,12 @@ public class Client implements Cloneable {
 
     @Override
     public Client clone() {
-        return new Client(this.id, this.name, this.adress, this.phones);
+        // новый экземпляр-копия
+        Client clientCopy = new Client(this.id, this.name, this.adress);
+        // Склонируем phones, вызвав метод добавления
+        this.phones.forEach(phone -> clientCopy.addPhone(new Phone(phone.getNumber())));
+        //return new Client(this.id, this.name, this.adress, this.phones);
+        return clientCopy;
     }
 
     public Long getId() {
