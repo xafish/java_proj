@@ -17,7 +17,7 @@ idea {
 }
 
 allprojects {
-    group "hw01"
+    group "ru.otus"
 
     repositories {
         mavenLocal()
