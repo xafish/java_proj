@@ -22,6 +22,3 @@ include 'L22-cache'
 include 'hw24-webServer'
 include 'hw24-webServer:homework-template'
 
-include 'L25-di:class-demo'
-include 'L25-di:homework-template'
-
