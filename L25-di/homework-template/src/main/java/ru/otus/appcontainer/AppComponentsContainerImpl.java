@@ -35,6 +35,10 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
                 AppComponent appComponent = method.getAnnotation(AppComponent.class);
                 // создаём экземпляр класса посредством вызова конструктора метода
                 Object exMethod = callMethod(exClass,method);
+                // пытаемся получить метод, если такой метод по-имени(перегрузка) уже есть - выдаём ошибку
+                if (getAppComponent(appComponent.name()) != null) {
+                    throw new RuntimeException("Метод " + appComponent.name() + "дублируется");
+                }
                 // добавляем метод в список
                 appComponentsByName.put(appComponent.name(), exMethod);
                 appComponents.add(exMethod);
