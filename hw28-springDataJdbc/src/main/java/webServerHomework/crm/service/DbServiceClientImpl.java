@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import webServerHomework.crm.model.Client;
 import webServerHomework.crm.repository.ClientRepository;
-import webServerHomework.sessionmanager.TransactionManager;
+import webServerHomework.sessionmanager.TransactionClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +15,17 @@ import java.util.Optional;
 public class DbServiceClientImpl implements DBServiceClient {
     private static final Logger log = LoggerFactory.getLogger(DbServiceClientImpl.class);
 
-    private final TransactionManager transactionManager;
+    private final TransactionClient transactionClient;
     private final ClientRepository clientRepository;
 
-    public DbServiceClientImpl(TransactionManager transactionManager, ClientRepository clientRepository) {
-        this.transactionManager = transactionManager;
+    public DbServiceClientImpl(TransactionClient transactionClient, ClientRepository clientRepository) {
+        this.transactionClient = transactionClient;
         this.clientRepository = clientRepository;
     }
 
     @Override
     public Client saveClient(Client client) {
-        return transactionManager.doInTransaction(() -> {
+        return transactionClient.doInTransaction(() -> {
             var savedClient = clientRepository.save(client);
             log.info("saved client: {}", savedClient);
             return savedClient;

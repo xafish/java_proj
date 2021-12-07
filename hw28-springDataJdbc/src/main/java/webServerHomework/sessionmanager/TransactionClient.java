@@ -1,6 +1,6 @@
 package webServerHomework.sessionmanager;
 
-public interface TransactionManager {
+public interface TransactionClient {
 
     <T> T doInTransaction(TransactionAction<T> action);
 }

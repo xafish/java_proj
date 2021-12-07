@@ -23,7 +23,6 @@ public class ClientResultSetExtractorClass implements ResultSetExtractor<List<Cl
         Client client = null;
         while (rs.next()) {
             clientId = (Long) rs.getObject("client_id");
-            //client = null;
             if (prevClientId == null || !prevClientId.equals(clientId)) {
                 Long adressId = (Long) rs.getObject("adress_id");
                 client = new Client(clientId,

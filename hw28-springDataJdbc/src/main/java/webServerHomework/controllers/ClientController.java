@@ -16,19 +16,10 @@ import java.util.Set;
 @Controller
 public class ClientController {
 
-    private final String osData;
-    private final String applicationYmlMessage;
 
     private final DBServiceClient dbServiceClient;
 
-    public ClientController(@Value("${app.client-list-page.msg:Тут может находиться ваша реклама}")
-                                    String applicationYmlMessage,
-                            @Value("OS: #{T(System).getProperty(\"os.name\")}, " +
-                                    "JDK: #{T(System).getProperty(\"java.runtime.version\")}")
-                                    String osData,
-                            DBServiceClient dbServiceClient) {
-        this.applicationYmlMessage = applicationYmlMessage;
-        this.osData = osData;
+    public ClientController(DBServiceClient dbServiceClient) {
         this.dbServiceClient = dbServiceClient;
     }
 
@@ -36,8 +27,6 @@ public class ClientController {
     public String clientsListView(Model model) {
         List<Client> clients = dbServiceClient.findAll();
         model.addAttribute("clients", clients);
-        model.addAttribute("osData", osData);
-        model.addAttribute("applicationYmlMessage", applicationYmlMessage);
         clients.forEach(a->System.out.println(a.getPhones()));
         return "clients";
     }

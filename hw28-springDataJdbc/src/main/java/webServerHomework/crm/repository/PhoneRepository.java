@@ -10,14 +10,4 @@ import java.util.Optional;
 
 
 public interface PhoneRepository extends CrudRepository<Phone, Long> {
-
-
-    //Optional<Phone> findByNumber(String name);
-
-    @Query("select * from phone where upper(number) = upper(:number)")
-    Optional<Phone> findByNumber(@Param("number") String number);
-
-    @Modifying
-    @Query("update phone set number = :newNumber where id = :id")
-    void updateNumber(@Param("id") long id, @Param("newNumber") String newNumber);
 }
