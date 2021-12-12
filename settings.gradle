@@ -24,3 +24,5 @@ include 'hw24-webServer:homework-template'
 include 'L25-di:class-demo'
 include 'L25-di:homework-template'
 include 'hw28-springDataJdbc'
+
+include 'hw31-executors'
