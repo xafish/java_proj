@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+
+</head>
+<!-- <body onload="getClients();"> -->
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <h4>Добавить клиента</h4>
+    <form action="/client/list" method="post">
+        <table border="1">
+            <tr>
+                <td style="width: 150px">Имя</td>
+                <td style="width: 100px">Адрес</td>
+                <td style="width: 100px">Телефоны</td>
+            </tr>
+            <tr>
+                <td style="width: 50px"><input type="text" name="name" id = "name" value="" placeholder="Введите имя клиента"></td>
+                <td style="width: 100px"><input type="text" name="address" id = "address" value="" placeholder="Введите адрес клиента"></td>
+                <td style="width: 100px"><input type="text" name="phone" id = "phone" value="" placeholder="Введите телефон клиента"></td>
+            </tr>
+        </table>
+        <br/><br/>
+        <!-- <input type="submit" value="Добавить"> -->
+        <button id="clientSave" class="btn btn-default" type="submit">Добавить</button>
+    </form>
+
+    <h4>Список клиентов</h4>
+    <div class="col-md-12">
+        <table id="conversation" class="table table-striped">
+            <thead>
+            <tr>
+                <td style="width: 50px">Id</td>
+                <td style="width: 150px">Имя</td>
+                <td style="width: 100px">Адрес</td>
+                <td style="width: 100px">Телефоны</td>
+            </tr>
+            </thead>
+            <tbody id="clientsList"></tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

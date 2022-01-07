@@ -26,6 +26,18 @@ dependencies {
         implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
         implementation("org.springframework.boot:spring-boot-starter-test")
 
+        implementation("org.springframework.boot:spring-boot-starter-websocket")
+
+        implementation("org.webjars:webjars-locator-core")
+        implementation("org.webjars:sockjs-client")
+        implementation("org.webjars:stomp-websocket")
+        implementation("org.webjars:bootstrap")
+
+        implementation project(':hw32-messagingSystem:MessageSystem')
+
+        //implementation 'org.springframework:spring-messaging:5.2.19.RELEASE'
+        //implementation 'org.springframework.amqp:spring-amqp:2.2.21.RELEASE'
+
     }
 }
 
