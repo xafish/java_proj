@@ -26,3 +26,7 @@ include 'L25-di:homework-template'
 include 'hw28-springDataJdbc'
 
 include 'hw31-executors'
+
+include 'hw32-messagingSystem:webServerWebSocket'
+include 'hw32-messagingSystem:MessageSystem'
+
