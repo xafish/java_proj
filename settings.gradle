@@ -30,3 +30,4 @@ include 'hw31-executors'
 include 'hw32-messagingSystem:webServerWebSocket'
 include 'hw32-messagingSystem:MessageSystem'
 
+include 'hw33-gRPC'
