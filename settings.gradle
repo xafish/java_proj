@@ -31,3 +31,5 @@ include 'hw32-messagingSystem:webServerWebSocket'
 include 'hw32-messagingSystem:MessageSystem'
 
 include 'hw33-gRPC'
+
+include 'hw28-springDataJdbc_v2'
