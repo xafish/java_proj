@@ -1,0 +1,88 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Клиенты</title>
+    <script src="https://unpkg.com/can-ndjson-stream@0.1.6/dist/global/can-ndjson-stream.js"></script>
+    <script>
+          function getClients() {
+                fetch("http://localhost:8080/client/list").then((response) => {
+                    return can.ndjsonStream(response.body);
+                }).then(dataStream => {
+                    const reader = dataStream.getReader();
+                    const read = result => {
+                        if (result.done) {
+                            return;
+                        }
+                        render(result.value);
+                        reader.read().then(read);
+                    }
+                    reader.read().then(read);
+                });
+              }
+
+              const render = value => {
+                    const div = document.createElement('div');
+                    let table = document.getElementById('clientsTable');
+                    let tbody = table.appendChild(document.createElement('tbody'));
+                    for (let index = 0; index < value.length; index++) {
+                        curVal = value[index];
+                        let row = document.createElement('tr');
+                        let row_clientid = document.createElement('td');
+                        let row_clientName = document.createElement('td');
+                        let row_clientAdress = document.createElement('td');
+                        let row_clientPhones = document.createElement('td');
+
+                        row_clientid.innerHTML = curVal.id;
+                        row_clientName.innerHTML = curVal.name;
+                        row_clientAdress.innerHTML =  curVal.adress?curVal.adress.street:null;
+                        row_clientPhones.innerHTML =  curVal.phones[0]?curVal.phones[0].number:null;
+
+                        row.appendChild(row_clientid);
+                        row.appendChild(row_clientName);
+                        row.appendChild(row_clientAdress);
+                        row.appendChild(row_clientPhones);
+                        tbody.appendChild(row);
+                    }
+              };
+    </script>
+</head>
+
+<body  onload="getClients();">
+<h4>Добавить клиента</h4>
+<form action="/client/save" method="post">
+    <table border="1">
+        <tr>
+            <td style="width: 150px">Имя</td>
+            <td style="width: 100px">Адрес</td>
+            <td style="width: 100px">Телефоны</td>
+        </tr>
+        <tr>
+            <td style="width: 50px"><input type="text" name="name" id="name" value="" placeholder="Введите имя клиента">
+            </td>
+            <td style="width: 100px"><input type="text" name="address" id="address" value=""
+                                            placeholder="Введите адрес клиента"></td>
+            <td style="width: 100px"><input type="text" name="phone" id="phone" value=""
+                                            placeholder="Введите телефон клиента"></td>
+        </tr>
+    </table>
+    <br/><br/>
+    <input type="submit" value="Добавить">
+</form>
+
+
+<h4>Список клиентов</h4>
+<table  border="1" id="clientsTable">
+    <thead>
+        <tr>
+            <td style="width: 50px">Id</td>
+            <td style="width: 150px">Имя</td>
+            <td style="width: 100px">Адрес</td>
+            <td style="width: 100px">Телефоны</td>
+        </tr>
+    </thead>
+    <tbody>
+        <div id="dataBlock"/>
+    </tbody>
+</table>
+
+</body>
+</html>
