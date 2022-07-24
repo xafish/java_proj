@@ -51,7 +51,6 @@ public class SourceDataController {
                                    @RequestParam(value = "phone", required = false) String phone) {
         log.info("Method saveClient");
         var client = new Client(name, new Adress(address), Set.of(new Phone(phone)));
-        Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
         var future = CompletableFuture
                 .supplyAsync(() -> dbServiceClient.saveClient(client), executor);
     }
