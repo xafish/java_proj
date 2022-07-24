@@ -31,6 +31,7 @@ public class ClientController {
         return "clients";
     }
 
+
     @PostMapping("/client/list")
     public RedirectView clientSave(@RequestParam(value = "name", required = false) String name,
                                     @RequestParam(value = "address", required = false) String address,
